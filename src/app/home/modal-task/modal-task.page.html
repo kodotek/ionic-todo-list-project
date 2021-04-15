@@ -1,0 +1,69 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="modal-header-toolbar">
+    <ion-buttons slot="start">
+      <a (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </a>
+    </ion-buttons>
+    <ion-title *ngIf="action == 'create'">Nueva tarea</ion-title>
+    <ion-title *ngIf="action == 'edit'">Editar tarea</ion-title>
+
+    <ion-buttons slot="end" *ngIf="action == 'edit'">
+      <a (click)="remove()">
+        <ion-icon color="danger" name="trash-outline"></ion-icon>
+      </a>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="contents">
+    <form [formGroup]="taskForm">
+      <ion-list class="fields">
+        <ion-item class="task-type">
+          <ion-label>Tipo de tarea</ion-label>
+          <ion-segment scrollable formControlName="type">
+            <ion-segment-button [value]="TYPE_PERSONAL" layout="icon-start">
+              <ion-label>Personal</ion-label>
+            </ion-segment-button>
+            <ion-segment-button [value]="TYPE_JOB" layout="icon-start">
+              <ion-label>Trabajo</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Fecha límite</ion-label>
+          <ion-datetime
+            displayFormat="DD/MM/YYYY"
+            placeholder="dd/mm/aaaa"
+            [min]="minLimitDate"
+            [max]="maxLimitDate"
+            cancelText="Cancelar"
+            doneText="Aceptar"
+            formControlName="limitDate"
+          ></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-textarea
+            rows="12"
+            formControlName="description"
+            placeholder="Describe la tarea ..."
+          ></ion-textarea>
+        </ion-item>
+      </ion-list>
+    </form>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-button
+    (click)="create()"
+    color="primary"
+    expand="block"
+    size="large"
+    *ngIf="action == 'create'"
+    >Crear tarea</ion-button
+  >
+</ion-footer>

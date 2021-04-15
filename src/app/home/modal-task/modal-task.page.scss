@@ -1,0 +1,41 @@
+ion-content {
+  pointer-events: auto;
+}
+
+ion-toolbar.modal-header-toolbar {
+  --background: #f0f0f0;
+  background: #f0f0f0;
+  box-shadow: none;
+
+  ion-title {
+    --color: #333;
+  }
+
+  ion-buttons {
+    a,
+    ion-button,
+    button {
+      padding-left: 10px;
+      font-size: 28px;
+      line-height: 1em;
+      font-weight: 400;
+      fill: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}
+
+.contents {
+  padding: 20px;
+}
+
+.task-type {
+  & > ion-label {
+    max-width: calc(100% - 240px);
+  }
+
+  ion-segment {
+    width: 240px;
+  }
+}

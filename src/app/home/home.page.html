@@ -1,20 +1,87 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+  <ion-toolbar color="primary" class="main-header">
+    <ion-buttons slot="end">
+      <ion-button (click)="newTask()">
+        <ion-icon slot="end" name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title> TODO LIST </ion-title>
+  </ion-toolbar>
+  <ion-toolbar color="primary" class="searcher">
+    <form [formGroup]="searchForm">
+      <ion-searchbar
+        animated
+        placeholder="Buscar..."
+        color="light"
+        formControlName="searcher"
+      ></ion-searchbar>
+    </form>
+  </ion-toolbar>
+  <ion-toolbar class="type-selection" color="light">
+    <ion-segment
+      scrollable
+      color="primary"
+      (ionChange)="applyFilter($event)"
+      [value]="activeStatusFilter"
+    >
+      <ion-segment-button [value]="STATUS_PENDING" layout="icon-start">
+        <ion-icon name="close-circle-outline"></ion-icon>
+        <ion-label>Pendientes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="STATUS_DONE" layout="icon-start">
+        <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+        <ion-label>Finalizadas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <div class="task-list" *ngIf="tasks && tasks.length > 0">
+      <ion-card
+        *ngFor="let task of tasks"
+        [ngClass]="{'limit-date-advise': isLateDate(task)}"
+      >
+        <ion-item lines="none" class="header">
+          <div class="task-type" (click)="editTask(task)" solt="start">
+            <ion-chip color="tertiary" *ngIf="task.type == TYPE_PERSONAL">
+              <ion-icon name="accessibility-outline"></ion-icon>
+              <ion-label>Personal</ion-label>
+            </ion-chip>
+
+            <ion-chip color="success" *ngIf="task.type == TYPE_JOB">
+              <ion-icon name="briefcase-outline"></ion-icon>
+              <ion-label>Trabajo</ion-label>
+            </ion-chip>
+          </div>
+          <ion-toggle
+            slot="end"
+            (ionChange)="switchStatus(task)"
+            [checked]="task.status == STATUS_DONE"
+          ></ion-toggle>
+        </ion-item>
+        <ion-card-content (click)="editTask(task)">
+          <div class="date" *ngIf="task.limitDate && task.limitDate != null">
+            <ion-icon
+              name="alert-circle-outline"
+              color="danger"
+              *ngIf="isLateDate(task)"
+            ></ion-icon>
+            <span class="date-limit">
+              <ion-icon name="time-outline"></ion-icon>
+              <ion-label
+                >Antes del {{ task.limitDate | date: "d 'de' MMMM, y"
+                }}</ion-label
+              >
+            </span>
+          </div>
+          <div class="description">{{ task.description }}</div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="no-tasks" *ngIf="tasks && tasks.length == 0">No hay tareas</div>
   </div>
 </ion-content>
