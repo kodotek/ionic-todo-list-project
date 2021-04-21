@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TaskService } from './services/task.service';
 import { HomePageModule } from './home/home.module';
+import { AuthService } from './services/auth.service';
+import { FirebaseService } from './services/firebase.service';
 
 registerLocaleData(localeEs, 'es_ES', localeEsExtra);
 
@@ -27,6 +29,8 @@ registerLocaleData(localeEs, 'es_ES', localeEsExtra);
   providers: [
     { provide: LOCALE_ID, useValue: 'es_ES' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    FirebaseService,
+    AuthService,
     TaskService,
   ],
   bootstrap: [AppComponent],

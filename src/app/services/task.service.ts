@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Task } from '../models/task';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 const TASK_API_END_POINT: string = 'https://curso-1af2a.firebaseio.com/Task/';
 
@@ -10,7 +11,14 @@ const TASK_API_END_POINT: string = 'https://curso-1af2a.firebaseio.com/Task/';
   providedIn: 'root',
 })
 export class TaskService {
-  constructor(private http: HttpClient) {}
+  private idToken: string;
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.getIdToken();
+  }
+
+  private async getIdToken() {
+    this.idToken = await this.authService.getIdToken();
+  }
 
   // Nueva tarea
   createTask(task: Task): Observable<any> {
@@ -19,7 +27,11 @@ export class TaskService {
     };
 
     const body = JSON.stringify(task);
-    return this.http.post(TASK_API_END_POINT + '.json', body, options);
+    return this.http.post(
+      TASK_API_END_POINT + '.json?auth=' + this.idToken,
+      body,
+      options
+    );
   }
 
   // Todas las tareas
@@ -68,11 +80,17 @@ export class TaskService {
     };
     const body = JSON.stringify(task);
 
-    return this.http.put(TASK_API_END_POINT + task.id + '.json', body, options);
+    return this.http.put(
+      TASK_API_END_POINT + task.id + '.json?auth=' + this.idToken,
+      body,
+      options
+    );
   }
 
   // Elimina tarea
   removeTask(id: string): Observable<any> {
-    return this.http.delete(TASK_API_END_POINT + id + '.json');
+    return this.http.delete(
+      TASK_API_END_POINT + id + '.json?auth=' + this.idToken
+    );
   }
 }
