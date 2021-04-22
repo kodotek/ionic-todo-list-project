@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  apiEndPoint: 'https://curso-1af2a.firebaseio.com/',
   firebaseConfig: {
     apiKey: 'AIzaSyC4bB2IyDSFTg-6Z0umbwb28Pn-PVMPGKw',
     authDomain: 'curso-1af2a.firebaseapp.com',
