@@ -5,7 +5,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
-const TASK_API_END_POINT: string = 'https://curso-1af2a.firebaseio.com/Task/';
+import { environment } from '../../environments/environment';
+
+const TASK_API_END_POINT: string = environment.apiEndPoint + 'Task/';
 
 @Injectable({
   providedIn: 'root',
